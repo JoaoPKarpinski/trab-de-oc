@@ -52,25 +52,34 @@ char** lerEnderecos(char* endereco){
 
 }
 
-void removePosicao(char** vet, int pos, int ultimo);
-
 int main(){
-    char endereco[8] = "top.din";
+    char endereco[100] = "";
+    char result[100] = "";
+    
+    printf("Insira o nome do arquivo a ser lido: ");
+    scanf(" %s", endereco);
+
+
+    printf("Insira o nome do arquivo resultado: ");
+    scanf(" %s", result);
+
     char endMemoria[10];
     char op[3];
 
-    FILE* arqTop = fopen(endereco, "r");
+    
+    FILE* arqResult = fopen(result, "w");
+    FILE* arqLido = fopen(endereco, "r");
     int totalLinhas = lerTotalDeLinhas(endereco);
     char** vetEnd = lerEnderecos(endereco);
 
     int totalRedundancias = 0;
 
 	for(int i = 0; i < totalLinhas; i++){
-		fscanf(arqTop, "%s %s", op, endMemoria);
+		fscanf(arqLido, "%s %s", op, endMemoria);
 		for(int j = 1 + i; j < totalLinhas; j++){
 			if(strcmp(vetEnd[j], endMemoria) == 0){
-				printf("redundante:\nlinha %d\nlinha %d\n\n", i, j);
-				vetEnd[j] = "xxxxx";
+				fprintf(arqResult, "redundante: linha %d e linha %d\nendereco: %s\n\n", i, j, endMemoria);
+				vetEnd[j] = (char*)"xxxxx";
                 totalRedundancias++;
 			}
 		}
@@ -78,19 +87,12 @@ int main(){
 
 	printf("\n\n\ntotal de linhas: %d\ntotal de bytes %d\ntotal de redundancias %d\n", totalLinhas, totalLinhas*4, totalRedundancias);
 
+
+	fprintf(arqResult, "\n\n\ntotal de linhas: %d\ntotal de bytes %d\ntotal de redundancias %d\n", totalLinhas, totalLinhas*4, totalRedundancias);
+
+
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
